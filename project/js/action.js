@@ -83,7 +83,7 @@ class Person {
 				thisFriend.enrage(EMOTION_RAGE);
 				if(killer) {
 					thisFriend.speak('I HATE YOU ' + killer.name + ' FOR KILLING ' + p.name + '!!!!!');
-					thisFriend.enemies.push(killer);
+					thisFriend.becomeenemy(killer);
 				}
 			}
 		}
@@ -107,6 +107,11 @@ class Person {
 	befriend(friend) {
 		this.friends.push(friend);
 		friend.friends.push(this);
+	}
+
+	becomeenemy(enemy) {
+		this.enemies.push(enemy);
+		// enemy.enemies.push(this); //always reciprocal?
 	}
 
 	isDead() {
