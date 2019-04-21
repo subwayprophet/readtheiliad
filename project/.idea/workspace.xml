@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b778801f-9c10-4eb8-8296-f731d9c4749d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/readtheiliad.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/action.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/action.js" afterDir="false" />
     </list>
@@ -20,7 +21,16 @@
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
-              <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+              <caret line="8" column="38" lean-forward="true" selection-start-line="8" selection-end-line="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/readtheiliad.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -28,8 +38,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/action.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="113" column="40" selection-start-line="113" selection-end-line="114" />
+            <state relative-caret-position="420">
+              <caret line="319" selection-start-line="319" selection-end-line="319" />
             </state>
           </provider>
         </entry>
@@ -74,9 +84,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -99,7 +109,12 @@
       <find>class charac</find>
       <find>cackling</find>
       <find>becom</find>
+      <find>console.log</find>
+      <find>utter</find>
     </findStrings>
+    <replaceStrings>
+      <replace>sayOutLoud</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -117,6 +132,7 @@
         <option value="$PROJECT_DIR$/js/argument.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/readtheiliad.html" />
         <option value="$PROJECT_DIR$/js/action.js" />
       </list>
     </option>
@@ -202,7 +218,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1555807358213</updated>
-      <workItem from="1555807359388" duration="10762000" />
+      <workItem from="1555807359388" duration="14546000" />
     </task>
     <task id="LOCAL-00001" summary="project index page">
       <created>1555807481845</created>
@@ -225,11 +241,25 @@
       <option name="project" value="LOCAL" />
       <updated>1555820376412</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add become enemy function">
+      <created>1555820618662</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1555820618662</updated>
+    </task>
+    <task id="LOCAL-00005" summary="better narrative flow">
+      <created>1555820880941</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1555820880941</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10762000" />
+    <option name="totallyTimeSpent" value="14546000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -274,7 +304,9 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="project index page" />
     <MESSAGE value="basic object model for the iliad??" />
-    <option name="LAST_COMMIT_MESSAGE" value="basic object model for the iliad??" />
+    <MESSAGE value="add become enemy function" />
+    <MESSAGE value="better narrative flow" />
+    <option name="LAST_COMMIT_MESSAGE" value="better narrative flow" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/css/custom.css">
@@ -294,13 +326,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -311,10 +336,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/readtheiliad.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="38" lean-forward="true" selection-start-line="8" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/action.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="113" column="40" selection-start-line="113" selection-end-line="114" />
+        <state relative-caret-position="420">
+          <caret line="319" selection-start-line="319" selection-end-line="319" />
         </state>
       </provider>
     </entry>

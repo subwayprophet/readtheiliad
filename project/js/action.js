@@ -63,7 +63,7 @@ class Person {
 	}
 
 	speak(speech) {
-		console.log(this.name + ' says ' + speech);
+		utter(this.name + ' says ' + speech);
 	}
 
 	kill(victim, deathYear) {
@@ -74,7 +74,7 @@ class Person {
 		let p = this;
 		p.lifeState = LIFESTATE_DEAD;
 		p.deathYear = deathYear ? deathYear : currentYear;
-		console.log(p.name + ' died in year ' + p.deathYear + '.');
+		utter(p.name + ' died in year ' + p.deathYear + '.');
 		p.goToLocation(LOCATION_UNDERWORLD);
 		if(p.friends) {
 			for(let i=0; i<p.friends.length; i++) {
@@ -154,7 +154,7 @@ class God extends Person {
 		gods.push(this);
 	}
 	die(deathYear) {
-		console.log(this.name + ' laughs at your attempt to kill him in year ' + deathYear + '. ' + this.name + ' is a god and therefore cannot die!!');
+		utter(this.name + ' laughs at your attempt to kill him in year ' + deathYear + '. ' + this.name + ' is a god and therefore cannot die!!');
 	}
 	gloat() {
 		this.emotionalState['cackling_glee'] += EMOTION_SMALL;
@@ -197,7 +197,7 @@ class Passage {
 
 		for(let i=0; i<p.actionsPerformed.length; i++) {
 			let thisAction = p.actionsPerformed[i];
-			console.log('In ' + p.citation + ', ' + thisAction.description);
+			utter('In ' + p.citation + ', ' + thisAction.description);
 			thisAction.enact();
 		}
 	}
@@ -213,7 +213,7 @@ class Action {
 	}
 
 	enact() {
-		console.log('.....and then.....');
+		utter('.....and then.....');
 	}
 }
 
@@ -263,7 +263,7 @@ var Odyssey_something = new Passage(Odyssey,'Odyssey blah',[Achilles]);
 function makeTheGodsLaugh() {
 	for(let i=0; i<gods.length; i++) {
 		let thisGod = gods[i];
-		console.log(thisGod.name + ' laughs.');
+		utter(thisGod.name + ' laughs.');
 		thisGod.gloat();
 	}
 }
@@ -272,12 +272,62 @@ function makeTheGodsLaugh() {
 function readTheIliad() {
 	currentYear = -1200;
 	initRelationships();
+	window.addEventListener('doneSinging',function(blah) {
+		utter('At the end of the Iliad, people are in this state: ');
+		for(let i=0; i<people.length; i++) {
+			let person = people[i];
+			let personStateString = generatePersonStateString(person);
+			utter(personStateString);
+		}
+
+		function generatePersonStateString(person) {
+			let stateString = '';
+			let emotionString = 'Their feelings are: ';
+			let friendsString = '';
+			let enemiesString = '';
+
+			let emotions = Object.keys(person.emotionalState);
+			for (let i = 0; i < emotions.length; i++) {
+				let separatorString = i === emotions.length-1 ? '.' : ',';
+				separatorString += ' ';
+				let thisEmotion = emotions[i];
+				let thisEmoStr = thisEmotion + ': ' + person.emotionalState[thisEmotion] + separatorString;
+				emotionString += thisEmoStr;
+			}
+
+			let friends = Object.keys(person.friends);
+			if(friends.length>0) {
+				friendsString += 'Their friends are: ';
+				for (let i = 0; i < friends.length; i++) {
+					let separatorString = i === friends.length-1 ? '.' : ',';
+					separatorString += ' ';
+					let thisFriend = friends[i];
+					let thisFriendStr = person.friends[thisFriend].name + separatorString;
+					friendsString += thisFriendStr;
+				}
+			}
+
+			let enemies = Object.keys(person.enemies);
+			if(enemies.length>0) {
+				enemiesString += 'Their enemies are: ';
+				for (let i = 0; i < enemies.length; i++) {
+					let separatorString = i === enemies.length-1 ? '.' : ',';
+					separatorString += ' ';
+					let thisEnemy = enemies[i];
+					let thisEnemyStr = person.enemies[thisEnemy].name + separatorString;
+					enemiesString += thisEnemyStr;
+				}
+			}
+
+			stateString += person.name + ' is currently ' + person.lifeState + '. ' + emotionString + friendsString + enemiesString;
+			return stateString;
+		}
+
+	});
 	realizePassages(passages);
-	console.log('At the end of the Iliad, people are in this state: ');
-	for(let i=0; i<people.length; i++) {
-		console.log(people[i]);
-	}
+
 }
+
 function initRelationships() {
 	//TODO: put in db or something
 	Achilles.befriend(Patroclus);
@@ -286,9 +336,26 @@ function initRelationships() {
 	Homer.befriend(Patroclus);
 }
 function realizePassages(passagesToRealize) {
-	console.log('SING!!!!');
+	utter('SING!!!!');
 	for(let i=0; i<passagesToRealize.length; i++) {
 		let thisPassage = passagesToRealize[i];
-		thisPassage.realize();
+		setTimeout(function() {
+			thisPassage.realize();
+			if(i===passagesToRealize.length-1) {
+				var doneSinging = new CustomEvent('doneSinging');
+				window.dispatchEvent(doneSinging);
+			}
+		},i*500);
+	}
+}
+
+function utter(thingToSay) {
+	console.log(thingToSay);
+	if(document.getElementById('narrativeStream')) {
+		var utteredLine = document.createElement("p");
+		var utteredSpeech = document.createTextNode(thingToSay);
+		utteredLine.appendChild(utteredSpeech);
+		var narrativeStreamContainer = document.getElementById('narrativeStream');
+		narrativeStreamContainer.appendChild(utteredLine);
 	}
 }
