@@ -13,6 +13,7 @@ const EMOTION_MENIS = Infinity;
 const EMOTION_MAX = 1000;
 const EMOTION_RAGE = 100;
 const EMOTION_SMALL = 10;
+const EMOTION_REALITYDISTANCE = 1;
 const EMOTIONAL_STATE_DEFAULT = {
 	'happiness' : 0,
 	'rage'      : 0
@@ -67,7 +68,9 @@ class Person {
 	}
 
 	kill(victim, deathYear) {
-		victim.die(deathYear, this);
+		var p = this;
+		(new Kill(p,victim,'Achilles slaughters Hector after chasing him around a lot')).enact();
+		// victim.die(deathYear, this);
 	}
 
 	die(deathYear, killer) {
@@ -87,7 +90,7 @@ class Person {
 				}
 			}
 		}
-		makeTheGodsLaugh();
+		// makeTheGodsLaugh();
 	}
 
 	goToLocation(place) {
@@ -96,12 +99,15 @@ class Person {
 
 	sadden(amountToSadden) {
 		this.emotionalState['happiness']  -= amountToSadden;
+		utter(this.name + ' saddens.');
 	}
 	happyfy(amountToHappyfy) {
 		this.emotionalState['happiness']  += amountToHappyfy;
+		utter(this.name + ' gets happier.');
 	}
 	enrage(amountToEnrage) {
 		this.emotionalState['rage'] += amountToEnrage;
+		utter(this.name + ' is enraged.');
 	}
 
 	befriend(friend) {
@@ -118,6 +124,14 @@ class Person {
 		return  this.lifeState === LIFESTATE_DEAD
 				|| this.deathYear < currentYear;
 	}
+
+	payAttentionTo(actionType, callback) {
+		var p = this;
+		window.addEventListener(actionType,function(event) {
+			utter(p.name + ' ' + 'notices that ' +  event.detail.description);
+			callback && callback();
+		});
+	}
 }
 
 class Character extends Person {
@@ -133,6 +147,8 @@ class Author extends Person {
 		super(name, job, description, undefined, deathYear);
 		this.birthPlace = birthPlace;
 		this.knownForAuthoring = knownForAuthoring;
+		this.payAttentionTo('kill');
+		this.payAttentionTo('die');
 		authors.push(this);
 	}
 
@@ -141,7 +157,20 @@ class Author extends Person {
 		alert(text);
 	}
 
-	enrage() {}; //authors don't feel rage?
+	payAttentionTo(actionType) {
+		var p = this;
+		super.payAttentionTo(actionType, function() {
+			switch(actionType) {
+				case 'die' :
+					p.sadden(EMOTION_SMALL);
+					break;
+				case 'kill' :
+					p.enrage(EMOTION_REALITYDISTANCE);
+			}
+		});
+	}
+
+	// enrage() {}; //authors don't feel rage?
 }
 
 class God extends Person {
@@ -149,15 +178,30 @@ class God extends Person {
 		super(name, job, description);
 		this.inChargeOf = inChargeOf;
 		this.emotionalState = {
+			'happiness'     : 1000, //makaroi
 			'cackling_glee' : 0
 		};
+		this.payAttentionTo('kill');
 		gods.push(this);
 	}
 	die(deathYear) {
 		utter(this.name + ' laughs at your attempt to kill him in year ' + deathYear + '. ' + this.name + ' is a god and therefore cannot die!!');
 	}
+
+	payAttentionTo(actionType, callback) {
+		var p = this;
+		super.payAttentionTo(actionType, function(event){
+			switch(actionType) {
+				case 'kill' :
+					p.gloat(EMOTION_SMALL);
+			}
+		});
+	}
+
 	gloat() {
-		this.emotionalState['cackling_glee'] += EMOTION_SMALL;
+		var p = this;
+		p.emotionalState['cackling_glee'] += EMOTION_SMALL;
+		utter(p.name + ' cackles with gloating glee.')
 	}
 }
 
@@ -173,7 +217,7 @@ class Text {
 }
 
 class Passage {
-	constructor(work,citation,charactersMentioned,actionsPerformed) {
+	constructor(work,citation,charactersMentioned,actionsPerformed,literalText) {
 		this.work = work;
 		this.citation = citation;
 		this.charactersMentioned = charactersMentioned;
@@ -181,6 +225,7 @@ class Passage {
 		work.characters = work.characters.concat(this.charactersMentioned);
 		this.relateToCharacters();
 		this.actionsPerformed = actionsPerformed;
+		this.literalText = literalText;
 		passages.push(this);
 	}
 
@@ -193,13 +238,15 @@ class Passage {
 
 	realize() {
 		let p = this;
-		if(!p.actionsPerformed) {return;}
+		if(p.literalText){ utter(p.literalText); }
 
+		if(!p.actionsPerformed) {return;}
 		for(let i=0; i<p.actionsPerformed.length; i++) {
 			let thisAction = p.actionsPerformed[i];
 			utter('In ' + p.citation + ', ' + thisAction.description);
 			thisAction.enact();
 		}
+		utter('____________________________________________________________')
 	}
 }
 
@@ -213,7 +260,7 @@ class Action {
 	}
 
 	enact() {
-		utter('.....and then.....');
+		var actionEvent = (new Event(this)).happen();
 	}
 }
 
@@ -223,8 +270,31 @@ class Kill extends Action {
 	}
 
 	enact() {
-		this.agent.kill(this.patient);
+		var a = this;
+		// a.agent.kill(a.patient);
+		var correspondingDeath = (new Die(a.patient,a.agent)).enact();
 		super.enact();
+	}
+}
+
+class Die extends Action {
+	constructor(deceased, agent, timestamp) {
+		deceased.die(null,agent);
+		super(null,deceased,'die',deceased.name + ' dies. ');
+	}
+}
+
+class Event {
+	constructor(action,timestamp) {
+		this.action = action;
+		this.timestamp = timestamp;
+	}
+	happen() {
+		utter('......and then another thing happened.......')
+		var eventHappened = new CustomEvent(this.action.type, {
+			detail: this.action
+		});
+		window.dispatchEvent(eventHappened);
 	}
 }
 
@@ -240,6 +310,23 @@ var Peleus = new Character('Peleus', 'king','Father of Achilles','Iliad');
 var Hector = new Character('Hector', 'warrior','Son of Priam','Iliad');
 var Homer = new Author('Homer', 'bard','blind poet','Ceos','Iliad and Odyssey',-700);
 var Zeus = new God('Zeus','king of the gods','child of Kronos, husband of Hera','sky, thunder, lightning');
+Zeus.payAttentionTo = function(actionType, callback) {
+	var p = this;
+	window.addEventListener(actionType,function(event) {
+		utter(p.name + ' ' + 'that jerk notices that ' +  event.detail.description);
+		switch(actionType) {
+			case 'kill' :
+				p.gloat(EMOTION_SMALL);
+				break;
+			case 'die' :
+				p.happyfy(EMOTION_REALITYDISTANCE);
+				utter('Zeus is extra happy because his plan is being fulfilled.');
+		}
+		callback && callback();
+	});
+};
+Zeus.payAttentionTo('die');
+
 var Hades = new God('Hades','king of the underworld','the invisible','the underworld');
 
 //define actions
@@ -250,7 +337,7 @@ var HectorBegsForMercy = new Action(Hector,Achilles,'begs','Hector begs Achilles
 //define texts
 var Iliad = new Text('Iliad',Homer);
 //define passages
-var Iliad1_1 = new Passage(Iliad,'Iliad 1.1',[Achilles,Peleus]);
+var Iliad1_1 = new Passage(Iliad,'Iliad 1.1',[Achilles,Peleus],[],'μῆνιν ἄειδε θεὰ Πηληϊάδεω Ἀχιλῆος');
 var Iliad1_3 = new Passage(Iliad,'Iliad 1.3',[Hades]);
 
 //define passages
@@ -260,13 +347,13 @@ var Iliad_22something = new Passage(Iliad,'Iliad 22.something',[Achilles,Hector]
 var Odyssey = new Text('Odyssey',Homer);
 var Odyssey_something = new Passage(Odyssey,'Odyssey blah',[Achilles]);
 
-function makeTheGodsLaugh() {
-	for(let i=0; i<gods.length; i++) {
-		let thisGod = gods[i];
-		utter(thisGod.name + ' laughs.');
-		thisGod.gloat();
-	}
-}
+// function makeTheGodsLaugh() {
+// 	for(let i=0; i<gods.length; i++) {
+// 		let thisGod = gods[i];
+// 		utter(thisGod.name + ' laughs.');
+// 		thisGod.gloat();
+// 	}
+// }
 
 //entry point!!!!!!
 function readTheIliad() {
@@ -274,6 +361,7 @@ function readTheIliad() {
 	initRelationships();
 	window.addEventListener('doneSinging',function(blah) {
 		utter('At the end of the Iliad, people are in this state: ');
+
 		for(let i=0; i<people.length; i++) {
 			let person = people[i];
 			let personStateString = generatePersonStateString(person);
@@ -331,9 +419,9 @@ function readTheIliad() {
 function initRelationships() {
 	//TODO: put in db or something
 	Achilles.befriend(Patroclus);
-	Hector.befriend(Homer); //haha
-	Homer.befriend(Achilles);
-	Homer.befriend(Patroclus);
+	// Hector.befriend(Homer); //haha
+	// Homer.befriend(Achilles);
+	// Homer.befriend(Patroclus);
 }
 function realizePassages(passagesToRealize) {
 	utter('SING!!!!');
