@@ -27,8 +27,6 @@ const RELATIONSHIP_TEMPLATE = {
 const LOCATION_UNDERWORLD = 'Hades';
 const LOCATION_DEFAULT = 'unknown'
 
-var currentYear = (new Date()).getFullYear();
-
 class Person {
 	constructor(name, work, description, lifeState, deathYear) {
 		this.name = name;
@@ -67,14 +65,14 @@ class Person {
 		utter(this.name + ' says ' + speech);
 	}
 
-	kill(victim, deathYear) {
+	tryToKill(victim, deathYear) {
 		var p = this;
-		(new Kill(p,victim,'Achilles slaughters Hector after chasing him around a lot')).enact();
-		// victim.die(deathYear, this);
+		(new Kill(p,victim,p.name + ' tries to kill ' + victim.name)).enact();
 	}
 
 	die(deathYear, killer) {
 		let p = this;
+		let success = true;
 		p.lifeState = LIFESTATE_DEAD;
 		p.deathYear = deathYear ? deathYear : currentYear;
 		utter(p.name + ' died in year ' + p.deathYear + '.');
@@ -90,7 +88,7 @@ class Person {
 				}
 			}
 		}
-		// makeTheGodsLaugh();
+		return success;
 	}
 
 	goToLocation(place) {
@@ -184,8 +182,11 @@ class God extends Person {
 		this.payAttentionTo('kill');
 		gods.push(this);
 	}
-	die(deathYear) {
-		utter(this.name + ' laughs at your attempt to kill him in year ' + deathYear + '. ' + this.name + ' is a god and therefore cannot die!!');
+	die(deathYear, killer) {
+		let success = false;
+		deathYear = deathYear ? deathYear : currentYear;
+		utter(this.name + ' laughs at ' + killer.name + '\'s attempt to kill him in the year ' + deathYear + '. ' + this.name + ' is a god and therefore cannot die!!');
+		return success;
 	}
 
 	payAttentionTo(actionType, callback) {
@@ -251,16 +252,24 @@ class Passage {
 }
 
 class Action {
-	constructor(agent,patient,type,description) {
+	constructor(agent,patient,type,description,cause) {
 		this.agent = agent;
 		this.patient = patient;
 		this.type = type;
 		this.description = description;
+		this.cause = cause;
 		actions.push(this);
 	}
 
-	enact() {
-		var actionEvent = (new Event(this)).happen();
+	enact(correlatedActions) {
+		if(correlatedActions) {
+			for(let i=0; i<correlatedActions.length; i++) {
+				let thisCorrelatedAction = correlatedActions[i];
+				thisCorrelatedAction.enact();
+			}
+		}
+		var wrappingEvent = (new Event(this));
+		wrappingEvent.happen(wrappingEvent.action.success);
 	}
 }
 
@@ -272,15 +281,17 @@ class Kill extends Action {
 	enact() {
 		var a = this;
 		// a.agent.kill(a.patient);
-		var correspondingDeath = (new Die(a.patient,a.agent)).enact();
-		super.enact();
+		var wrappingEvent = (new Event(a));
+		wrappingEvent.happen(true); //???? :(
+		var correspondingDeaths = [(new Die(a.patient,a.agent,a))];
+		super.enact(correspondingDeaths);
 	}
 }
 
 class Die extends Action {
-	constructor(deceased, agent, timestamp) {
-		deceased.die(null,agent);
-		super(null,deceased,'die',deceased.name + ' dies. ');
+	constructor(deceased, agent, cause) {
+		super(null,deceased,'die',deceased.name + ' dies. ',cause);
+		this.success = deceased.die(null,agent);
 	}
 }
 
@@ -289,12 +300,15 @@ class Event {
 		this.action = action;
 		this.timestamp = timestamp;
 	}
-	happen() {
-		utter('......and then another thing happened.......')
-		var eventHappened = new CustomEvent(this.action.type, {
-			detail: this.action
-		});
-		window.dispatchEvent(eventHappened);
+	happen(success) {
+		if(success) {
+			utter('......and then another thing happened.......')
+			var eventHappened = new CustomEvent(this.action.type, {
+				detail: this.action,
+				success: success
+			});
+			window.dispatchEvent(eventHappened);
+		}
 	}
 }
 
@@ -308,6 +322,7 @@ Achilles.enrage = function() { //Achilles is a special case!
 var Patroclus = new Character('Patroclus', 'warrior','hetairos of Achilles','Iliad');
 var Peleus = new Character('Peleus', 'king','Father of Achilles','Iliad');
 var Hector = new Character('Hector', 'warrior','Son of Priam','Iliad');
+var Priam = new Character('Priam', 'king','king of Troy, father of Hector','Iliad');
 var Homer = new Author('Homer', 'bard','blind poet','Ceos','Iliad and Odyssey',-700);
 var Zeus = new God('Zeus','king of the gods','child of Kronos, husband of Hera','sky, thunder, lightning');
 Zeus.payAttentionTo = function(actionType, callback) {
@@ -419,6 +434,7 @@ function readTheIliad() {
 function initRelationships() {
 	//TODO: put in db or something
 	Achilles.befriend(Patroclus);
+	Priam.befriend(Hector);
 	// Hector.befriend(Homer); //haha
 	// Homer.befriend(Achilles);
 	// Homer.befriend(Patroclus);
@@ -446,4 +462,17 @@ function utter(thingToSay) {
 		var narrativeStreamContainer = document.getElementById('narrativeStream');
 		narrativeStreamContainer.appendChild(utteredLine);
 	}
+}
+
+
+var currentYear = (new Date()).getFullYear();
+var currentCharacter = Homer;
+var currentLine = 1;
+
+function be(character) {
+	currentCharacter = character;
+}
+
+function act(command) {
+	eval(currentCharacter.name + '.' + command);
 }
