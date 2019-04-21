@@ -197,8 +197,8 @@ class Passage {
 
 		for(let i=0; i<p.actionsPerformed.length; i++) {
 			let thisAction = p.actionsPerformed[i];
+			console.log('In ' + p.citation + ', ' + thisAction.description);
 			thisAction.enact();
-			console.log('in ' + p.citation + ', ' + thisAction.description);
 		}
 	}
 }
@@ -223,8 +223,8 @@ class Kill extends Action {
 	}
 
 	enact() {
-		super.enact();
 		this.agent.kill(this.patient);
+		super.enact();
 	}
 }
 
