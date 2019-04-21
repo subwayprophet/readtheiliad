@@ -1,0 +1,10 @@
+.toc li {
+    margin: 10px
+}
+
+.level1 > li {
+    font-size: 150%
+}
+.level2 > li {
+    font-size: 80%
+}
