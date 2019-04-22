@@ -42,6 +42,7 @@ class Person {
 			'enemies' : []
 		};
 		this.emotionalState = Object.assign({},EMOTIONAL_STATE_DEFAULT); //clone!
+		this.thingsOwned = [];
 		people.push(this);
 	}
 
@@ -61,8 +62,49 @@ class Person {
 		return this.relationships['enemies'];
 	}
 
+	get netWorth() {
+		let p = this;
+		let netWorth = 0;
+		for(let i=0; i<p.thingsOwned.length; i++) {
+			let thingOwned = p.thingsOwned[i];
+			if(thingOwned.value) { netWorth += thingOwned.value; }
+		}
+		return netWorth;
+	}
+
 	speak(speech) {
 		utter(this.name + ' says ' + speech);
+	}
+
+	accept(thing, giver) {
+		var p = this;
+		let success = true; //sometimes people reject gifts
+
+
+		if(!p.isAcceptableGiver(giver, thing)) {
+			p.enrage(EMOTION_SMALL);
+			utter(p.name + ' rejects the offer of ' + thing.name + ' from that jerk ' + giver.name + '.');
+			success = false;
+		} else {
+			p.thingsOwned.push(thing);
+			giver.thingsOwned = giver.thingsOwned.filter(function(thingOwned) {
+				return thingOwned !== thing;
+			});
+			success = true;
+		}
+
+		return success;
+	}
+	isAcceptableGiver(giver, gift) {
+		let p = this;
+		if(p.enemies.indexOf(giver) !== -1) { //dont accept gifts from enemies?
+			return false;
+		}
+		return true;
+	}
+	give(thing, recipient) {
+		var p = this;
+		(new Give(p,recipient,thing,p.name + ' offers ' + thing.name + ' to ' +  recipient.name)).enact();
 	}
 
 	tryToKill(victim, deathYear) {
@@ -147,6 +189,7 @@ class Author extends Person {
 		this.knownForAuthoring = knownForAuthoring;
 		this.payAttentionTo('kill');
 		this.payAttentionTo('die');
+		this.payAttentionTo('give');
 		authors.push(this);
 	}
 
@@ -164,6 +207,10 @@ class Author extends Person {
 					break;
 				case 'kill' :
 					p.enrage(EMOTION_REALITYDISTANCE);
+					break;
+				case 'give' :
+					p.happyfy(EMOTION_SMALL);
+					utter(p.name + ' smiles at such an act of generosity.');
 			}
 		});
 	}
@@ -203,6 +250,15 @@ class God extends Person {
 		var p = this;
 		p.emotionalState['cackling_glee'] += EMOTION_SMALL;
 		utter(p.name + ' cackles with gloating glee.')
+	}
+}
+
+class Thing {
+	constructor(name,type,value, owner) {
+		this.name = name;
+		this.type = type;
+		this.value = value; //also should be its own type? but for now just a number
+		if(owner) { owner.thingsOwned.push(this); }
 	}
 }
 
@@ -257,17 +313,19 @@ class Action {
 		this.patient = patient;
 		this.type = type;
 		this.description = description;
-		this.cause = cause;
+		this.cause = cause; //another action? js isn't typed but..do we need Causes modeled?
 		actions.push(this);
 	}
 
 	enact(correlatedActions) {
+		//sometimes actions go with other actions (for instance, logically: 'kill' and 'die'; or causally: 'exhort' and 'attack')
 		if(correlatedActions) {
 			for(let i=0; i<correlatedActions.length; i++) {
 				let thisCorrelatedAction = correlatedActions[i];
 				thisCorrelatedAction.enact();
 			}
 		}
+		//any time an action occurs, fire an event so that anyone listening knows about it
 		var wrappingEvent = (new Event(this));
 		wrappingEvent.happen(wrappingEvent.action.success);
 	}
@@ -295,6 +353,16 @@ class Die extends Action {
 	}
 }
 
+class Give extends Action {
+	constructor(giver,recipient,gift,description,timestamp) {
+		super(giver,recipient,'give',description);
+		this.giver = giver;
+		this.gift = gift;
+		this.recipient = recipient;
+		this.success = this.recipient.accept(this.gift,this.giver);
+	}
+}
+
 class Event {
 	constructor(action,timestamp) {
 		this.action = action;
@@ -302,7 +370,7 @@ class Event {
 	}
 	happen(success) {
 		if(success) {
-			utter('......and then another thing happened.......')
+			utter('......and then......')
 			var eventHappened = new CustomEvent(this.action.type, {
 				detail: this.action,
 				success: success
@@ -318,13 +386,18 @@ var Achilles = new Character('Achilles', 'warrior','Son of Peleus','Iliad');
 Achilles.enrage = function() { //Achilles is a special case!
 	this.emotionalState['rage'] += EMOTION_MENIS;
 };
-
 var Patroclus = new Character('Patroclus', 'warrior','hetairos of Achilles','Iliad');
+var AwesomeArmor1 = new Thing('Achilles\' awesome first armor','armor',1000,Achilles);
+
 var Peleus = new Character('Peleus', 'king','Father of Achilles','Iliad');
 var Hector = new Character('Hector', 'warrior','Son of Priam','Iliad');
+var TrojanArmor1 = new Thing('Hector\'s sweet armor','armor',800,Hector);
+
 var Priam = new Character('Priam', 'king','king of Troy, father of Hector','Iliad');
 var Homer = new Author('Homer', 'bard','blind poet','Ceos','Iliad and Odyssey',-700);
+
 var Zeus = new God('Zeus','king of the gods','child of Kronos, husband of Hera','sky, thunder, lightning');
+//all gods cackle with glee at killing, but for this story zeus in particular pays attention to deaths, because his boule (from the kypria) is to thin the human population
 Zeus.payAttentionTo = function(actionType, callback) {
 	var p = this;
 	window.addEventListener(actionType,function(event) {
@@ -347,17 +420,18 @@ var Hades = new God('Hades','king of the underworld','the invisible','the underw
 //define actions
 var HectorKillPatroclus = new Kill(Hector,Patroclus,'Hector kills Patroclus after Patroclus kills a lot of Trojans');
 var AchillesKillsHector = new Kill(Achilles,Hector,'Achilles slaughters Hector after chasing him around a lot');
+var AchillesTriesToKillZeus = new Kill(Achilles,Zeus,'Achilles tries to kill Zeus cuz he is mad APOCRYPHAL???');
 var HectorBegsForMercy = new Action(Hector,Achilles,'begs','Hector begs Achilles not to kill him.');
 
 //define texts
 var Iliad = new Text('Iliad',Homer);
+
 //define passages
 var Iliad1_1 = new Passage(Iliad,'Iliad 1.1',[Achilles,Peleus],[],'μῆνιν ἄειδε θεὰ Πηληϊάδεω Ἀχιλῆος');
 var Iliad1_3 = new Passage(Iliad,'Iliad 1.3',[Hades]);
-
-//define passages
 var Iliad_16something = new Passage(Iliad,'Iliad 16.something',[Hector,Patroclus],[HectorKillPatroclus]);
 var Iliad_22something = new Passage(Iliad,'Iliad 22.something',[Achilles,Hector],[HectorBegsForMercy,AchillesKillsHector]);
+var Iliad_22something = new Passage(Iliad,'Iliad 24.haha',[Achilles,Zeus],[AchillesTriesToKillZeus]);
 
 var Odyssey = new Text('Odyssey',Homer);
 var Odyssey_something = new Passage(Odyssey,'Odyssey blah',[Achilles]);
