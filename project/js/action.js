@@ -422,6 +422,7 @@ var Hector = new Character('Hector', 'warrior','Son of Priam','Iliad');
 var TrojanArmor1 = new Thing('Hector\'s sweet armor','armor',800,Hector);
 var BMW = new Thing("BMW","car",3000,Zog);
 var Middlefinger = new Thing("Middle Finger","gesture",5,Achilles);
+var Grappa = new Thing("Grappa","beverage",2,Agamemnon);
 
 
 var Priam = new Character('Priam', 'king','king of Troy, father of Hector','Iliad');
