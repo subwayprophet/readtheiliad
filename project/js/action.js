@@ -146,7 +146,7 @@ class Person {
 		if(!adjective) { adjective = 'Bachannalian'}
 		p.enrage(80);
 		utter(p.name + " fumes.");
-		p.speak("\"You " + adjective + " bastard son of a bitch scheisse.\"");
+		p.speak("\"You " + adjective + " bastard son of a bitch scheisse bonobo.\"");
 
 
 	}
