@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b778801f-9c10-4eb8-8296-f731d9c4749d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/action.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/action.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -12,6 +13,9 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="project" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -36,8 +40,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/action.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="393" column="73" lean-forward="true" selection-start-line="393" selection-start-column="73" selection-end-line="393" selection-end-column="73" />
+            <state relative-caret-position="192">
+              <caret line="148" column="72" selection-start-line="148" selection-start-column="72" selection-end-line="148" selection-end-column="72" />
             </state>
           </provider>
         </entry>
@@ -90,25 +94,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>'gift'</find>
-      <find>new autho</find>
-      <find>this.recipient.acc</find>
-      <find>notices that</find>
-      <find>give(</find>
-      <find>class person</find>
-      <find>class thing</find>
-      <find>new thing</find>
-      <find>accept(</find>
-      <find>class giv</find>
-      <find>awesomea</find>
-      <find>listento</find>
-      <find>payattentionto</find>
       <find>menis</find>
       <find>var zu</find>
       <find>class gd</find>
       <find>class per</find>
       <find>class act</find>
-      <find>kill</find>
       <find>payaten</find>
       <find>achilles.</find>
       <find>give</find>
@@ -120,6 +110,20 @@
       <find>new chaac`</find>
       <find>new die</find>
       <find>payattention</find>
+      <find>initr</find>
+      <find>sweet a</find>
+      <find>TrojanArmor1</find>
+      <find>var hecto</find>
+      <find>accept</find>
+      <find>trojan</find>
+      <find>action</find>
+      <find>kill</find>
+      <find>class pr</find>
+      <find>class kill</find>
+      <find>finger</find>
+      <find>bastarrd</find>
+      <find>fume</find>
+      <find>bachann</find>
     </findStrings>
     <replaceStrings>
       <replace>sayOutLoud</replace>
@@ -129,7 +133,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="master" />
+        <entry key="$PROJECT_DIR$/.." value="initial_outline" />
       </map>
     </option>
   </component>
@@ -169,7 +173,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -191,6 +194,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -233,7 +237,8 @@
       <workItem from="1556649016167" duration="835000" />
       <workItem from="1556932295558" duration="231000" />
       <workItem from="1557862142351" duration="17000" />
-      <workItem from="1561343624739" duration="1207000" />
+      <workItem from="1561343624739" duration="5241000" />
+      <workItem from="1561414206206" duration="129000" />
     </task>
     <task id="LOCAL-00001" summary="project index page">
       <created>1555807481845</created>
@@ -298,11 +303,25 @@
       <option name="project" value="LOCAL" />
       <updated>1555937292564</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="update workspace">
+      <created>1561345378518</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1561345378518</updated>
+    </task>
+    <task id="LOCAL-00011" summary="update workspace">
+      <created>1561349091522</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1561349091522</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30898000" />
+    <option name="totallyTimeSpent" value="35061000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -317,9 +336,9 @@
     <frame x="9" y="23" width="1412" height="792" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49142858" visible="true" weight="0.14306255" />
-      <window_info id="Structure" order="1" sideWeight="0.50857145" side_tool="true" visible="true" weight="0.14306255" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49103138" visible="true" weight="0.14306255" />
+      <window_info id="Structure" order="1" sideWeight="0.5089686" side_tool="true" weight="0.14306255" />
+      <window_info id="Favorites" order="2" sideWeight="0.5089686" side_tool="true" weight="0.14306255" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.24285714" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -329,7 +348,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Log Viewer" order="7" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.17571428" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="9" visible="true" weight="0.36285713" />
       <window_info anchor="bottom" id="SOQL Query" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Anonymous Apex" order="12" />
@@ -342,6 +361,47 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="initial_outline" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
@@ -353,23 +413,14 @@
     <MESSAGE value="new event class; new die class; kills and deaths correlated as actions; people can pay attention to events; authors pay attention to deaths; zeus has extra happiness from every death because of his boule; authors get a little enraged at every kill; gods are blessed (happiness 1000) by default; passages can have literal text, uttered if present; separate passages by horizontal line during narration;" />
     <MESSAGE value="add be and act functions; add success/failure to action and event dispatcher; change kill to tryToKill since can fail; add Priam as character" />
     <MESSAGE value="add thing ownership; add give action and associated give/receive methods; add ability to reject gift from certain recipients" />
-    <option name="LAST_COMMIT_MESSAGE" value="add thing ownership; add give action and associated give/receive methods; add ability to reject gift from certain recipients" />
+    <MESSAGE value="added finger functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="added finger functions" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/readtheiliad.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="38" selection-start-line="8" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="30">
-            <caret line="2" column="46" selection-start-line="2" selection-start-column="46" selection-end-line="2" selection-end-column="46" />
-          </first_editor>
-          <second_editor />
+        <state relative-caret-position="165">
+          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -390,17 +441,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/readtheiliad.html">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+        <state relative-caret-position="120">
+          <caret line="8" column="38" selection-start-line="8" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="30">
+            <caret line="2" column="46" selection-start-line="2" selection-start-column="46" selection-end-line="2" selection-end-column="46" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/action.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="393" column="73" lean-forward="true" selection-start-line="393" selection-start-column="73" selection-end-line="393" selection-end-column="73" />
+        <state relative-caret-position="192">
+          <caret line="148" column="72" selection-start-line="148" selection-start-column="72" selection-end-line="148" selection-end-column="72" />
         </state>
       </provider>
     </entry>
