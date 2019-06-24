@@ -14,6 +14,7 @@ const EMOTION_MAX = 1000;
 const EMOTION_RAGE = 100;
 const EMOTION_SMALL = 10;
 const EMOTION_REALITYDISTANCE = 1;
+const EMOTION_MIDDLEFINGER = 80;
 const EMOTIONAL_STATE_DEFAULT = {
 	'happiness' : 0,
 	'rage'      : 0
@@ -86,6 +87,7 @@ class Person {
 			utter(p.name + ' rejects the offer of ' + thing.name + ' from that jerk ' + giver.name + '.');
 			success = false;
 		} else {
+			utter(p.name + ' scoffs at this pathetic mortal possession of a ' + thing.name + ' from the lowly ' + giver.name + ".");
 			p.thingsOwned.push(thing);
 			giver.thingsOwned = giver.thingsOwned.filter(function(thingOwned) {
 				return thingOwned !== thing;
@@ -105,6 +107,12 @@ class Person {
 	give(thing, recipient) {
 		var p = this;
 		(new Give(p,recipient,thing,p.name + ' offers ' + thing.name + ' to ' +  recipient.name)).enact();
+	}
+
+	giveTheFinger(mockee,adjective) {
+		var p = this;
+		(new Givethefinger(p,mockee,adjective)).enact();
+		p.give(Middlefinger,mockee);
 	}
 
 	tryToKill(victim, deathYear) {
@@ -131,6 +139,16 @@ class Person {
 			}
 		}
 		return success;
+	}
+
+	fume(adjective) {
+		var p = this;
+		if(!adjective) { adjective = 'Bachannalian'}
+		p.enrage(80);
+		utter(p.name + " fumes.");
+		p.speak("\"You " + adjective + " bastard.\"");
+
+
 	}
 
 	goToLocation(place) {
@@ -353,6 +371,13 @@ class Die extends Action {
 	}
 }
 
+class Givethefinger extends Action {
+	constructor(mocker,mockee,adjective){
+		super(mocker,mockee,"insult");
+		mockee.fume(adjective);
+	}
+}
+
 class Give extends Action {
 	constructor(giver,recipient,gift,description,timestamp) {
 		super(giver,recipient,'give',description);
@@ -387,13 +412,20 @@ Achilles.enrage = function() { //Achilles is a special case!
 	this.emotionalState['rage'] += EMOTION_MENIS;
 };
 var Patroclus = new Character('Patroclus', 'warrior','hetairos of Achilles','Iliad');
+
+var Zog = new Character("Zog",'King of the Albanians',"Father of Albania", 'Zogiad');
+
 var AwesomeArmor1 = new Thing('Achilles\' awesome first armor','armor',1000,Achilles);
 
 var Peleus = new Character('Peleus', 'king','Father of Achilles','Iliad');
 var Hector = new Character('Hector', 'warrior','Son of Priam','Iliad');
 var TrojanArmor1 = new Thing('Hector\'s sweet armor','armor',800,Hector);
+var BMW = new Thing("BMW","car",3000,Zog);
+var Middlefinger = new Thing("Middle Finger","gesture",5,Achilles);
+
 
 var Priam = new Character('Priam', 'king','king of Troy, father of Hector','Iliad');
+var Agamemnon = new Character('Agamemnon', 'king','king of Argos, giant asshole','Iliad');
 var Homer = new Author('Homer', 'bard','blind poet','Ceos','Iliad and Odyssey',-700);
 
 var Zeus = new God('Zeus','king of the gods','child of Kronos, husband of Hera','sky, thunder, lightning');
